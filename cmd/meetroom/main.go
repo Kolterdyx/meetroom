@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/Kolterdyx/meetroom/internal"
 	"log"
-	"meetroom/internal"
 	"net/http"
 	"os"
 	"os/exec"
@@ -31,6 +31,8 @@ func openChromium(ctx context.Context) {
 		"--kiosk",
 		"--noerrdialogs",
 		"--disable-infobars",
+		"--use-fake-ui-for-media-stream",
+		"--disable-features=TranslateUI",
 		"--disable-session-crashed-bubble",
 		"--autoplay-policy=no-user-gesture-required",
 		"--usenable-features=VaapiVideoDecoder",
