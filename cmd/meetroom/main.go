@@ -2,34 +2,21 @@ package main
 
 import (
 	"context"
-	"html/template"
 	"log"
+	"meetroom/internal"
 	"net/http"
 	"os"
 	"os/exec"
 )
 
-var templates map[string]*template.Template
-
 func main() {
-	templates = make(map[string]*template.Template)
-	templates["controller"] = template.Must(template.ParseFiles(
-		"templates/layout.html",
-		"templates/controller.html",
-	))
-	templates["idle"] = template.Must(template.ParseFiles(
-		"templates/layout.html",
-		"templates/idle.html",
-	))
-	http.HandleFunc("/", controllerHandler)
-	http.HandleFunc("/new", newMeetingHandler)
-	http.HandleFunc("/join", joinMeetingHandler)
-	http.HandleFunc("/end", endMeetingHandler)
-	http.HandleFunc("/idle", idleHandler)
+	http.HandleFunc("/", internal.ControllerHandler)
+	http.HandleFunc("/new", internal.NewMeetingHandler)
+	http.HandleFunc("/join", internal.JoinMeetingHandler)
+	http.HandleFunc("/end", internal.EndMeetingHandler)
+	http.HandleFunc("/idle", internal.IdleHandler)
 
-	http.Handle("/static/",
-		http.StripPrefix("/static/",
-			http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", internal.StaticHandler())
 
 	log.Println("Meet room control listening on :5000")
 	ctx, cancel := context.WithCancel(context.Background())
@@ -60,11 +47,4 @@ func openChromium(ctx context.Context) {
 		log.Fatalf("Chromium exited with error: %v", err)
 	}
 	log.Println("Chromium exited")
-}
-
-func render(w http.ResponseWriter, name string, data any) {
-	err := templates[name].ExecuteTemplate(w, "layout", data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
 }
