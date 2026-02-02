@@ -1,0 +1,27 @@
+
+{{ define "content" }}
+<div class="card">
+  <h1>Reuniones Power Rangers</h1>
+
+  <form action="/new" method="post" class="form">
+    <button type="submit" class="btn primary">Crear sala</button>
+  </form>
+
+  <form action="/join" method="post" class="form">
+    <label>
+      Enlace de Google Meet
+      <input
+        type="text"
+        name="link"
+        placeholder="https://meet.google.com/xxx-xxxx-xxx"
+        required
+      >
+    </label>
+    <button type="submit" class="btn secondary">Unirse</button>
+  </form>
+
+  <form action="/end" method="post" class="form">
+    <button type="submit" class="btn danger">Salir de la reunión</button>
+  </form>
+</div>
+{{ end }}
