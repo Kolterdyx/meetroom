@@ -1,0 +1,11 @@
+[Unit]
+Description=Meet Room Control Panel
+After=network.target
+
+[Service]
+ExecStart=/opt/meetroom/meetroom
+Restart=always
+User=kolterdyx
+
+[Install]
+WantedBy=multi-user.target
