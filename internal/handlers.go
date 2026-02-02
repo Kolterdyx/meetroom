@@ -3,7 +3,9 @@ package internal
 import (
 	"embed"
 	"html/template"
+	"log"
 	"net/http"
+	"time"
 )
 
 var templates map[string]*template.Template
@@ -69,6 +71,20 @@ func JoinMeetingHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+	go func() {
+		for i := 0; i < 5; i++ {
+			time.Sleep(5 * time.Second)
+			tab, err := FindMeetTab()
+			if err != nil {
+				continue
+			}
+			if err := InjectJoinClick(tab.WebSocketDebuggerURL); err != nil {
+				log.Printf("Error injecting join click: %v", err)
+			} else {
+				log.Printf("Success injected join click")
+			}
+		}
+	}()
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

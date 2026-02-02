@@ -28,7 +28,7 @@ func main() {
 func openChromium(ctx context.Context) {
 	cmd := exec.CommandContext(ctx,
 		"chromium",
-		"--kiosk",
+		//"--kiosk",
 		"--noerrdialogs",
 		"--disable-infobars",
 		"--use-fake-ui-for-media-stream",
